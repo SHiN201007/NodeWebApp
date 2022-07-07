@@ -1,6 +1,6 @@
 const express = require('express');
 require('../Extensions/StringExtension');
-require('../Extensions/firebase');
+require('../environments/firebase');
 
 const firebaseAuth = require("firebase/auth");
 
