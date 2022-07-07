@@ -6,8 +6,9 @@ signModel = require('../Models/SignModel');
 module.exports = {
     doSignUp: function(req, res, next) {
         const email = req.body.email;
+        const password = req.body.password;
         // メール認証呼び出し
-        signModel.signUp(email)
+        signModel.signUp(email,password)
         .then((result) => {
             const data = {
                 info: {
