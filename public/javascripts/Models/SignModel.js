@@ -2,12 +2,13 @@ const express = require('express');
 require('../Extensions/StringExtension');
 
 //firebase
-require('../environments/firebase');
-const firebase = require("firebase/app");
+const firebase = require('../environments/firebase');
 const firebaseAuth = require("firebase/auth");
-const getFirestore = require('firebase/firestore');
-const db = getFirestore();
 
+const db = firebase.DBInfo();
+const firestore = firebase.firestore();
+const doc = firestore.doc;
+const getDoc = firestore.getDoc;
 
 module.exports = {
     // サインアップ処理
@@ -16,22 +17,21 @@ module.exports = {
             (async () => {
                 try {
                     await firebaseAuth.signInWithEmailAndPassword(firebaseAuth.getAuth(),email, password).then((user) => {
-                        const userStr = String(user);
-                        const userName = "";
-                        console.log(user.user.uid);
+                        var userName = "";
+                        const userId = user.user.uid;
 
                         (async () => {
                             try {
-                                const snapshot = await db.collection('Users');
-                                console.log(snapshot);
+                                var result = "";
+                                const docRef = doc(db, "Users", userId);
+                                const docSnap = await getDoc(docRef);
 
-                                snapshot.forEach((doc) => {
-                                    if(user.user.uid == doc.id){
-                                        userName =doc.get('userName');
-                                    }
-                                    console.log(doc.id, '=>', doc.data());
-                                });
-                                const result = userStr.isEmpty() ? 'failure' : `${userName}でログインしました。`;
+                                if (docSnap.exists()) {
+                                    userName = docSnap.get('userName');
+                                    result = `${userName}でログインしました。`;
+                                } else {
+                                    result = 'No such document!';
+                                }
                                 resolve(result);              
                             } catch (err) {
                               console.log(err);
