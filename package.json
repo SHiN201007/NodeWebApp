@@ -6,11 +6,12 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@google-cloud/firestore": "^5.0.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "ejs": "~2.6.1",
+    "ejs": "^3.1.8",
     "express": "~4.16.1",
-    "firebase": "^9.8.4",
+    "firebase": "^9.8.3",
     "firebase-admin": "^11.0.0",
     "firebase-functions": "^3.22.0",
     "http-errors": "~1.6.3",
